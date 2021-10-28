@@ -24,3 +24,8 @@ Injector injector = Guice.createInjector(new GuiceModule(), new SpringModule(con
 
 Person person = injector.getInstance(Person.class);
 ```
+
+References:
+
+- [Guice vs Spring – Dependency Injection](https://www.baeldung.com/guice-spring-dependency-injection)
+- [eugenp/tutorials](https://github.com/eugenp/tutorials)
