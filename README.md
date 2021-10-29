@@ -8,22 +8,22 @@ Assume there is a machine learning framework that provides `Model` and `Metric` 
 ```java
 public class ModelModule extends AbstractModule {
     
-	@Override 
-	protected void configure() {
-		bind(Model.class).to(LogisticRegression.class);
-	}
-
+    @Override 
+    protected void configure() {
+        bind(BaseModel.class).to(LogisticRegression.class);
+    }
+    
 }
 ```
 
 ```java
 public class MetricModule extends AbstractModule {
-
-	@Override
-	protected void configure() {
-		bind(Metric.class).to(Recall.class);
-	}
-
+    
+    @Override 
+    protected void configure() {
+        bind(BaseMetric.class).to(Recall.class);
+    }
+    
 }
 ```
 
@@ -32,8 +32,8 @@ Here, you found novel `RandomForest` implementation for the framework on GitHub,
 In this situation, `spring-guice` enables you to easily apply the Spring-based injector to your Guice-based module as follows:
 
 ```java
-AnnotationConfigApplicationContext context =
-		new AnnotationConfigApplicationContext(SpringAppConfig.class);
+AnnotationConfigApplicationContext context = 
+        new AnnotationConfigApplicationContext(SpringAppConfig.class);
 
 Injector injector = Guice.createInjector(new SpringModule(context), new MetricModule());
 

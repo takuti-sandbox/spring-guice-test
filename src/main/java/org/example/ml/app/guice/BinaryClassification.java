@@ -1,22 +1,22 @@
 package org.example.ml.app.guice;
 
-import org.example.ml.framework.Metric;
-import org.example.ml.framework.Model;
+import org.example.ml.framework.BaseMetric;
+import org.example.ml.framework.BaseModel;
 import com.google.inject.Inject;
 
 public class BinaryClassification {
 
     @Inject
-    private Model model;
+    private BaseModel model;
 
     @Inject
-    private Metric metric;
+    private BaseMetric metric;
 
-    public Model getModel() {
+    public BaseModel getModel() {
         return model;
     }
 
-    public Metric getMetric() {
+    public BaseMetric getMetric() {
         return metric;
     }
 

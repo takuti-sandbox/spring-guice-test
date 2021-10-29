@@ -1,4 +1,4 @@
 package org.example.ml.framework;
 
-public interface Model {
+public interface BaseModel {
 }
