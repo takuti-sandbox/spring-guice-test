@@ -1,8 +1,8 @@
 package org.example.ml.app.spring;
 
-import org.example.ml.framework.Metric;
+import org.example.ml.framework.Model;
 import org.springframework.stereotype.Component;
 
 @Component
-public class Recall implements Metric {
+public class RandomForest implements Model {
 }
