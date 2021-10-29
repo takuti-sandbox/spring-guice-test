@@ -3,26 +3,41 @@ Example: [spring-guice](https://github.com/spring-projects/spring-guice)
 
 Guice and Spring are major Dependency Injection (DI) frameworks. In this example, we inject Spring-based dependency to Guice-based base class by leveraging [spring-guice](https://github.com/spring-projects/spring-guice).
 
-- Target: `Person`, depending on Guice's `@Inject`
-- Dependencies
-	- `Address` - Naturally bound by a Guice module
-	- `Phone` - Implementation is found by a Spring configuration class 
+Assume there is a machine learning framework that provides `Model` and `Metric` interface. You have built a Guice-based `BinaryClassification` application on top of the framework, which binds:
 
 ```java
-import org.example.spring.config.AppSpringConfig;
-import org.example.guice.module.GuiceModule;
+public class ModelModule extends AbstractModule {
+    
+	@Override 
+	protected void configure() {
+		bind(Model.class).to(LogisticRegression.class);
+	}
 
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.guice.module.SpringModule;
+}
+```
 
-AnnotationConfigApplicationContext context = 
-		new AnnotationConfigApplicationContext(AppSpringConfig.class);
+```java
+public class MetricModule extends AbstractModule {
 
-Injector injector = Guice.createInjector(new GuiceModule(), new SpringModule(context));
+	@Override
+	protected void configure() {
+		bind(Metric.class).to(Recall.class);
+	}
 
-Person person = injector.getInstance(Person.class);
+}
+```
+
+Here, you found novel `RandomForest` implementation for the framework on GitHub, and it seems to be promising as an alternative to `LogisticRegression`. However, unlike your own app, the third-party code depends on Spring to achieve DI and serves the custom application in the form of `@Configuration`-annotated `SpringAppConfig` module.
+
+In this situation, `spring-guice` enables you to easily apply the Spring-based injector to your Guice-based module as follows:
+
+```java
+AnnotationConfigApplicationContext context =
+		new AnnotationConfigApplicationContext(SpringAppConfig.class);
+
+Injector injector = Guice.createInjector(new SpringModule(context), new MetricModule());
+
+BinaryClassification app = injector.getInstance(BinaryClassification.class);
 ```
 
 References:
